@@ -215,6 +215,29 @@
 	[super drawRect:rect];
 }
 
+- (void)drawTextInRect:(CGRect)rect
+{
+	UIEdgeInsets insets = {0, 0, 0, 0};
+	
+	CGRect newRect = [self textRectForBounds:CGRectMake(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height) limitedToNumberOfLines:self.numberOfLines];
+	
+    [super drawTextInRect:UIEdgeInsetsInsetRect(newRect, insets)];
+}
+
+- (void)setLinkAttributes:(NSDictionary *)linkAttributes
+{
+	_linkAttributes = linkAttributes;
+	
+	if ([_linkAttributes count] > 0)
+	{
+		NSMutableAttributedString *attribString = [self.attributedText mutableCopy];
+		for (int i = 0; i < [self.links count]; i++)
+		{
+			[attribString addAttributes:_linkAttributes range:((PPLabelLink*)[self.links objectAtIndex:i]).range];
+		}
+	}
+}
+
 //- (void)setText:(NSString *)text
 //{
 //	[super setText:text];

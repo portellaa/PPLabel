@@ -83,7 +83,9 @@
  */
 @property(nonatomic, weak) id <PPLabelDelegate> delegate;
 
-
+/**
+ Dictionary with list of attributes and values to apply on the attributed String
+ */
 @property (nonatomic, retain) NSDictionary *linkAttributes;
 
 /**

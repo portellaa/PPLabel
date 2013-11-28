@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B55DB881846368C00D7067D /* PPLabelLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B55DB871846368C00D7067D /* PPLabelLink.m */; };
 		4B8AF3A21697515400520907 /* LinksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B8AF3A11697515400520907 /* LinksViewController.m */; };
 		4B8D0D91168E2506009D3F22 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8D0D90168E2506009D3F22 /* UIKit.framework */; };
 		4B8D0D93168E2506009D3F22 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8D0D92168E2506009D3F22 /* Foundation.framework */; };
@@ -24,6 +25,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1B55DB861846368C00D7067D /* PPLabelLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPLabelLink.h; sourceTree = "<group>"; };
+		1B55DB871846368C00D7067D /* PPLabelLink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPLabelLink.m; sourceTree = "<group>"; };
 		4B8AF3A01697515400520907 /* LinksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinksViewController.h; sourceTree = "<group>"; };
 		4B8AF3A11697515400520907 /* LinksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinksViewController.m; sourceTree = "<group>"; };
 		4B8D0D8C168E2506009D3F22 /* PPLabel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PPLabel.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -103,6 +106,8 @@
 				4B8D0DAB168E2506009D3F22 /* ViewController.h */,
 				4B8D0DAC168E2506009D3F22 /* ViewController.m */,
 				4B8D0D97168E2506009D3F22 /* Supporting Files */,
+				1B55DB861846368C00D7067D /* PPLabelLink.h */,
+				1B55DB871846368C00D7067D /* PPLabelLink.m */,
 			);
 			path = PPLabel;
 			sourceTree = "<group>";
@@ -192,6 +197,7 @@
 				4B8D0DAD168E2506009D3F22 /* ViewController.m in Sources */,
 				4B8D0DB5168E2557009D3F22 /* PPLabel.m in Sources */,
 				4B8AF3A21697515400520907 /* LinksViewController.m in Sources */,
+				1B55DB881846368C00D7067D /* PPLabelLink.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

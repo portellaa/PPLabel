@@ -9,9 +9,15 @@
 #import "PPLabel.h"
 #import <CoreText/CoreText.h>
 
+#import "PPLabelLink.h"
+
 @interface PPLabel ()
 
 @property(nonatomic, strong) NSSet* lastTouches;
+@property (nonatomic, retain) NSMutableArray *links;
+
+- (void)initialize;
+- (CGRect)textRect;
 
 @end
 
@@ -21,8 +27,7 @@
     
     self = [super initWithFrame:frame];
     if (self) {
-        
-        self.userInteractionEnabled = YES;
+		[self initialize];
     }
     return self;
 }
@@ -31,15 +36,16 @@
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        
-        self.userInteractionEnabled = YES;
+		[self initialize];
     }
     return self;
 }
 
+
 - (CFIndex)characterIndexAtPoint:(CGPoint)point {
     
     ////////
+	NSLog(@"CharacterIndexAtPoint:");
     
     NSMutableAttributedString* optimizedAttributedText = [self.attributedText mutableCopy];
     
@@ -154,11 +160,92 @@
     
     CFRelease(frame);
     CFRelease(path);
+	
+	NSLog(@"characterIndexAtPoint: %@ : %u", NSStringFromCGPoint(point), idx);
     
     return idx;
 }
 
-#pragma mark --
+- (void)addLink:(NSString*)link withText:(NSString*)text
+{
+	
+	PPLabelLink *newLink = [[PPLabelLink alloc] init];
+	
+	[newLink setRef:link];
+	[newLink setText:text];
+	
+	NSRange range = [self.text rangeOfString:text];
+	
+	if (range.location != NSNotFound)
+	{
+		[newLink setRange:range];
+		
+		if ([self.links indexOfObject:newLink] == NSNotFound)
+		{
+			NSLog(@"Range of text %@ : %@", text, NSStringFromRange(range));
+			
+			NSMutableAttributedString *attribString = [self.attributedText mutableCopy];
+			[attribString addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range];
+			
+			self.attributedText = attribString;
+			
+			[self.links addObject:newLink];
+		}
+	}
+	
+	NSLog(@"Number of links: %d", [self.links count]);
+	
+	
+//	NSUInteger words = 0, characters = 0;
+//	
+//	if (range.location != NSNotFound)
+//	{
+//		NSArray *fullTextTokens = [self.text componentsSeparatedByString:@" "];
+//		while (characters < range.location)
+//		{
+//			NSLog(@"Word: %@ at position: %d", fullTextTokens[words], words);
+//			characters += ([fullTextTokens[words] length] + 1);
+//			words++;
+//		}
+//	}
+//	NSLog(@"Words: %u", words);
+//	NSLog(@"Characters: %u", characters);
+//	
+//	NSString *result = nil;
+//	NSScanner *scanner = [[NSScanner alloc] initWithString:self.text];
+//	[scanner setCaseSensitive:NO];
+//	if ([scanner scanUpToString:text intoString:&result] == YES)
+//	{
+//		NSLog(@"Founded String %@ at position: %u", text, [scanner scanLocation]);
+//	}
+//	
+//	if ([scanner scanString:text intoString:&result])
+//	{
+//		NSLog(@"Founded String %@ at position: %u", text, [scanner scanLocation]);
+//	}
+}
+
+
+#pragma mark - Override methods
+
+- (void)setText:(NSString *)text
+{
+	[super setText:text];
+}
+
+- (void)setAttributedText:(NSAttributedString *)attributedText
+{
+	[super setAttributedText:attributedText];
+}
+
+
+#pragma mark - Private Methods
+
+- (void)initialize
+{
+	self.links = [[NSMutableArray alloc] init];
+	[self setUserInteractionEnabled:YES];
+}
 
 - (CGRect)textRect {
     
@@ -175,8 +262,26 @@
     return textRect;
 }
 
+//Will be used to detect simple URL's and URL's on a anchor
+- (void)detectURLsAndAnchorsOnText
+{
+	NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:NULL];
+	
+    NSArray *matches = [detector matchesInString:self.text
+                                         options:0
+                                           range:NSMakeRange(0, self.text.length)];
+	
+    for (NSTextCheckingResult *match in matches)
+	{
+		if ([match resultType] == NSTextCheckingTypeLink)
+		{
+			
+		}
+	}
+}
 
-#pragma mark --
+
+#pragma mark - Protocol Delegates
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     

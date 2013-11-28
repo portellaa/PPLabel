@@ -29,21 +29,29 @@
     self.matches = [detector matchesInString:self.label.text options:0 range:NSMakeRange(0, self.label.text.length)];
     
     [self highlightLinksWithIndex:NSNotFound];
+	
+	[self.label addLink:@"http://www.google.com" withText:@"is some"];
+	[self.label addLink:@"http://www.google.com" withText:@"text with"];
+	[self.label addLink:@"http://www.google.com" withText:@"random text"];
 }
 
 #pragma mark -
 
-- (void)label:(PPLabel *)label didBeginTouch:(UITouch *)touch onCharacterAtIndex:(CFIndex)charIndex {
+- (BOOL)label:(PPLabel *)label didBeginTouch:(UITouch *)touch onCharacterAtIndex:(CFIndex)charIndex {
     
     [self highlightLinksWithIndex:charIndex];
+	
+	return YES;
 }
 
-- (void)label:(PPLabel *)label didMoveTouch:(UITouch *)touch onCharacterAtIndex:(CFIndex)charIndex {
+- (BOOL)label:(PPLabel *)label didMoveTouch:(UITouch *)touch onCharacterAtIndex:(CFIndex)charIndex {
     
     [self highlightLinksWithIndex:charIndex];
+	
+	return YES;
 }
 
-- (void)label:(PPLabel *)label didEndTouch:(UITouch *)touch onCharacterAtIndex:(CFIndex)charIndex {
+- (BOOL)label:(PPLabel *)label didEndTouch:(UITouch *)touch onCharacterAtIndex:(CFIndex)charIndex {
     
     [self highlightLinksWithIndex:NSNotFound];
     
@@ -60,12 +68,16 @@
             }
         }
     }
+	
+	return YES;
 
 }
 
-- (void)label:(PPLabel *)label didCancelTouch:(UITouch *)touch {
+- (BOOL)label:(PPLabel *)label didCancelTouch:(UITouch *)touch {
     
     [self highlightLinksWithIndex:NSNotFound];
+	
+	return YES;
 }
 
 #pragma mark -

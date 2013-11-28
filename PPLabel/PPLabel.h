@@ -13,6 +13,8 @@
 /// The delegate of a PPLabel object
 @protocol PPLabelDelegate <NSObject>
 
+@optional
+
 /**
  Tells the delegate that the label was touched and returns which character was touched.
  
@@ -84,5 +86,8 @@
  @return Index of a character at given point or NSNotFound.
  */
 - (CFIndex)characterIndexAtPoint:(CGPoint)point;
+
+
+- (void)addLink:(NSString*)link withText:(NSString*)text;
 
 @end

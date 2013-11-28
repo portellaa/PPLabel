@@ -30,6 +30,9 @@
     
     [self highlightLinksWithIndex:NSNotFound];
 	
+	[self.label setLinkAttributes:@{NSForegroundColorAttributeName : [UIColor redColor],
+									NSFontAttributeName : [UIFont boldSystemFontOfSize:self.label.font.pointSize]}];
+	
 	[self.label addLink:@"http://www.google.com" withText:@"is some"];
 	[self.label addLink:@"http://www.google.com" withText:@"text with"];
 	[self.label addLink:@"http://www.google.com" withText:@"random text"];

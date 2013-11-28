@@ -183,7 +183,8 @@
 			NSLog(@"Range of text %@ : %@", text, NSStringFromRange(range));
 			
 			NSMutableAttributedString *attribString = [self.attributedText mutableCopy];
-			[attribString addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range];
+			
+			[attribString addAttributes:_linkAttributes range:range];
 			
 			self.attributedText = attribString;
 			
@@ -192,22 +193,21 @@
 	}
 	
 	NSLog(@"Number of links: %d", [self.links count]);
-
 }
 
 
 #pragma mark - Override methods
 
-- (void)setText:(NSString *)text
-{
-	[super setText:text];
-}
-
-- (void)setAttributedText:(NSAttributedString *)attributedText
-{
-	[super setAttributedText:attributedText];
-}
-
+// Not needed for now
+//- (void)setText:(NSString *)text
+//{
+//	[super setText:text];
+//}
+//
+//- (void)setAttributedText:(NSAttributedString *)attributedText
+//{
+//	[super setAttributedText:attributedText];
+//}
 
 #pragma mark - Private Methods
 
@@ -215,6 +215,9 @@
 {
 	self.links = [[NSMutableArray alloc] init];
 	[self setUserInteractionEnabled:YES];
+	
+	_linkAttributes = @{NSForegroundColorAttributeName : [UIColor blueColor],
+						NSFontAttributeName : [UIFont boldSystemFontOfSize:self.font.pointSize]};
 }
 
 - (CGRect)textRect {

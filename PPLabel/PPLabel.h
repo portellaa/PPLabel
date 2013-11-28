@@ -83,6 +83,9 @@
  */
 @property(nonatomic, weak) id <PPLabelDelegate> delegate;
 
+
+@property (nonatomic, retain) NSDictionary *linkAttributes;
+
 /**
  Cancels current touch and calls didCancelTouch: on the delegate.
  

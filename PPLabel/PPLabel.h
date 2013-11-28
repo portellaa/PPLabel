@@ -102,7 +102,27 @@
  */
 - (CFIndex)characterIndexAtPoint:(CGPoint)point;
 
-
+/**
+ Adds a link to the string specified if this exists on label text. When user tap the string the method is send to delegate if this one response to that.
+ This method detects all the instances of text in label text.
+ 
+ @param link This should be an instance of NSString with the link that will be send to delegate when string is pressed.
+ 
+ @param text This should be an instance of NSString with the text that will be searched in the label text
+ 
+ */
 - (void)addLink:(NSString*)link withText:(NSString*)text;
+
+/**
+ Adds a link to the string specified if this exists on label text. When user tap the string the method is send to delegate if this one response to that.
+ 
+ @param link This should be an instance of NSString with the link that will be send to delegate when string is pressed.
+ 
+ @param text This should be an instance of NSString with the text that will be searched in the label text
+ 
+ @param range The location of the text in the label text
+ 
+ */
+- (void)addLink:(NSString*)link withText:(NSString*)text andRange:(NSRange)range;
 
 @end

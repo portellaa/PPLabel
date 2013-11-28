@@ -16,6 +16,7 @@
 
 - (void)initialize;
 - (CGRect)textRect;
+- (NSRange)searchForString:(NSString*)text fromRange:(NSRange)range;
 
 @end
 
@@ -43,7 +44,6 @@
 - (CFIndex)characterIndexAtPoint:(CGPoint)point {
     
     ////////
-	NSLog(@"CharacterIndexAtPoint:");
     
     NSMutableAttributedString* optimizedAttributedText = [self.attributedText mutableCopy];
     
@@ -158,21 +158,34 @@
     
     CFRelease(frame);
     CFRelease(path);
-	
-	NSLog(@"characterIndexAtPoint: %@ : %u", NSStringFromCGPoint(point), idx);
     
     return idx;
 }
 
 - (void)addLink:(NSString*)link withText:(NSString*)text
 {
+	BOOL allFound = NO;
+
+	NSRange range = NSMakeRange(0, [self.text length]);
+	NSRange oldRange = NSMakeRange(0, 0);
 	
+	while (allFound == NO)
+	{
+		range = NSMakeRange((oldRange.length + oldRange.location), (self.text.length - (oldRange.location + oldRange.length)));
+		
+		oldRange = [self searchForString:text fromRange:range];
+		
+		if (oldRange.location == NSNotFound)
+			allFound = YES;
+		else [self addLink:link withText:text andRange:oldRange];
+	}
+}
+
+- (void)addLink:(NSString*)link withText:(NSString*)text andRange:(NSRange)range
+{
 	PPLabelLink *newLink = [[PPLabelLink alloc] init];
-	
-	[newLink setRef:link];
 	[newLink setText:text];
-	
-	NSRange range = [self.text rangeOfString:text];
+	[newLink setRef:link];
 	
 	if (range.location != NSNotFound)
 	{
@@ -180,8 +193,6 @@
 		
 		if ([self.links indexOfObject:newLink] == NSNotFound)
 		{
-			NSLog(@"Range of text %@ : %@", text, NSStringFromRange(range));
-			
 			NSMutableAttributedString *attribString = [self.attributedText mutableCopy];
 			
 			[attribString addAttributes:_linkAttributes range:range];
@@ -192,18 +203,25 @@
 		}
 	}
 	
-	NSLog(@"Number of links: %d", [self.links count]);
+	NSLog(@"Number of lines on array: %d", [self.links count]);
 }
-
 
 #pragma mark - Override methods
 
-// Not needed for now
+- (void)drawRect:(CGRect)rect
+{
+	[self detectURLsAndAnchorsOnText];
+	
+	[super drawRect:rect];
+}
+
 //- (void)setText:(NSString *)text
 //{
 //	[super setText:text];
+//	
+//	[self detectURLsAndAnchorsOnText];
 //}
-//
+// Not needed for now
 //- (void)setAttributedText:(NSAttributedString *)attributedText
 //{
 //	[super setAttributedText:attributedText];
@@ -218,6 +236,16 @@
 	
 	_linkAttributes = @{NSForegroundColorAttributeName : [UIColor blueColor],
 						NSFontAttributeName : [UIFont boldSystemFontOfSize:self.font.pointSize]};
+}
+
+- (NSRange)searchForString:(NSString*)text fromRange:(NSRange)range
+{
+	if (range.location == NSNotFound)
+	{
+		return [self.text rangeOfString:text];
+	}
+	
+	return [self.text rangeOfString:text options:0 range:range];
 }
 
 - (CGRect)textRect {
@@ -248,7 +276,7 @@
 	{
 		if ([match resultType] == NSTextCheckingTypeLink)
 		{
-			
+			[self addLink:match.URL.absoluteString withText:match.URL.absoluteString andRange:match.range];
 		}
 	}
 }

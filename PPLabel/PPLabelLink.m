@@ -51,7 +51,6 @@
 	if (self.range.location != NSNotFound)
 	{
 		NSRange intersection = NSIntersectionRange(self.range, this.range);
-		NSLog(@"Intersection: %@", NSStringFromRange(intersection));
 		if (intersection.length > 0) // there is some intersection, so there is a touch event to this text
 			return YES;
 

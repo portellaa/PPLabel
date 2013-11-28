@@ -23,19 +23,20 @@
     
     self.label.delegate = self;
     
-    NSError *error = NULL;
-    NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:&error];
-
-    self.matches = [detector matchesInString:self.label.text options:0 range:NSMakeRange(0, self.label.text.length)];
+//    NSError *error = NULL;
+//    NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:&error];
+//
+//    self.matches = [detector matchesInString:self.label.text options:0 range:NSMakeRange(0, self.label.text.length)];
     
-    [self highlightLinksWithIndex:NSNotFound];
+//	[self highlightLinksWithIndex:NSNotFound];
 	
 	[self.label setLinkAttributes:@{NSForegroundColorAttributeName : [UIColor redColor],
 									NSFontAttributeName : [UIFont boldSystemFontOfSize:self.label.font.pointSize]}];
 	
+	[self.label addLink:@"http://www.google.com" withText:@"another"];
 	[self.label addLink:@"http://www.google.com" withText:@"is some"];
-	[self.label addLink:@"http://www.google.com" withText:@"text with"];
-	[self.label addLink:@"http://www.google.com" withText:@"random text"];
+//	[self.label addLink:@"http://www.google.com" withText:@"text with"];
+//	[self.label addLink:@"http://www.google.com" withText:@"random text"];
 }
 
 #pragma mark -

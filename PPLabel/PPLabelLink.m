@@ -39,14 +39,18 @@
 
 - (BOOL)isEqual:(id)object
 {
+//	object stored in the array
 	PPLabelLink *this = (PPLabelLink*)object;
-	
-	if (this.dummyLocation != nil)
-		return NSLocationInRange([this dummyLocation], _range);
-	
-	if (this.range.location != NSNotFound)
+
+	if (self.dummyLocation != nil)
 	{
-		NSRange intersection = NSIntersectionRange(_range, this.range);
+		
+		return NSLocationInRange(self.dummyLocation, this.range);
+	}
+	
+	if (self.range.location != NSNotFound)
+	{
+		NSRange intersection = NSIntersectionRange(self.range, this.range);
 		NSLog(@"Intersection: %@", NSStringFromRange(intersection));
 		if (intersection.length > 0) // there is some intersection, so there is a touch event to this text
 			return YES;
@@ -54,9 +58,10 @@
 		return NO;
 	}
 	
-	if ((this.text != nil) && ([this.text length] > 0))
+	if ((self.text != nil) && ([self.text length] > 0))
 	{
-		if ([this.text caseInsensitiveCompare:_text] == 0)
+		if ([self.text caseInsensitiveCompare:this.text
+			 ] == 0)
 		{
 			return YES;
 		}

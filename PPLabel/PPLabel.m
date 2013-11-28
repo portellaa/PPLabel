@@ -9,8 +9,6 @@
 #import "PPLabel.h"
 #import <CoreText/CoreText.h>
 
-#import "PPLabelLink.h"
-
 @interface PPLabel ()
 
 @property(nonatomic, strong) NSSet* lastTouches;
@@ -194,35 +192,7 @@
 	}
 	
 	NSLog(@"Number of links: %d", [self.links count]);
-	
-	
-//	NSUInteger words = 0, characters = 0;
-//	
-//	if (range.location != NSNotFound)
-//	{
-//		NSArray *fullTextTokens = [self.text componentsSeparatedByString:@" "];
-//		while (characters < range.location)
-//		{
-//			NSLog(@"Word: %@ at position: %d", fullTextTokens[words], words);
-//			characters += ([fullTextTokens[words] length] + 1);
-//			words++;
-//		}
-//	}
-//	NSLog(@"Words: %u", words);
-//	NSLog(@"Characters: %u", characters);
-//	
-//	NSString *result = nil;
-//	NSScanner *scanner = [[NSScanner alloc] initWithString:self.text];
-//	[scanner setCaseSensitive:NO];
-//	if ([scanner scanUpToString:text intoString:&result] == YES)
-//	{
-//		NSLog(@"Founded String %@ at position: %u", text, [scanner scanLocation]);
-//	}
-//	
-//	if ([scanner scanString:text intoString:&result])
-//	{
-//		NSLog(@"Founded String %@ at position: %u", text, [scanner scanLocation]);
-//	}
+
 }
 
 
@@ -281,7 +251,7 @@
 }
 
 
-#pragma mark - Protocol Delegates
+#pragma mark - UILabel Touch Events Protocol Delegates
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     
@@ -289,6 +259,23 @@
     
     UITouch *touch = [touches anyObject];
     CFIndex index = [self characterIndexAtPoint:[touch locationInView:self]];
+	
+	PPLabelLink *isLink = [[PPLabelLink alloc] init];
+	[isLink setDummyLocation:index];
+
+	NSUInteger indexOnArray = [self.links indexOfObject:isLink];
+	isLink = nil;
+	if (indexOnArray != NSNotFound)
+	{
+		if ([self.delegate respondsToSelector:@selector(label:didSelectTextWithLink:)])
+		{
+			[self.delegate label:self didSelectTextWithLink:[self.links objectAtIndex:indexOnArray]];
+			return;
+		}
+	}
+	
+	if (![self.delegate respondsToSelector:@selector(label:didBeginTouch:onCharacterAtIndex:)])
+		[super touchesBegan:touches withEvent:event];
     
     if (![self.delegate label:self didBeginTouch:touch onCharacterAtIndex:index]) {
         [super touchesBegan:touches withEvent:event];
@@ -301,6 +288,9 @@
     
     UITouch *touch = [touches anyObject];
     CFIndex index = [self characterIndexAtPoint:[touch locationInView:self]];
+	
+	if (![self.delegate respondsToSelector:@selector(label:didMoveTouch:onCharacterAtIndex:)])
+		[super touchesMoved:touches withEvent:event];
     
     if (![self.delegate label:self didMoveTouch:touch onCharacterAtIndex:index]) {
         [super touchesMoved:touches withEvent:event];
@@ -317,6 +307,9 @@
     
     UITouch *touch = [touches anyObject];
     CFIndex index = [self characterIndexAtPoint:[touch locationInView:self]];
+	
+	if (![self.delegate respondsToSelector:@selector(label:didEndTouch:onCharacterAtIndex:)])
+		[super touchesEnded:touches withEvent:event];
     
     if (![self.delegate label:self didEndTouch:touch onCharacterAtIndex:index]) {
         [super touchesEnded:touches withEvent:event];

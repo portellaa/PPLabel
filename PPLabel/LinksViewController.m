@@ -110,4 +110,10 @@
     self.label.attributedText = attributedString;
 }
 
+- (void)label:(PPLabel *)label didSelectTextWithLink:(PPLabelLink *)labelLink
+{
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:labelLink.text message:labelLink.ref delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+    [alert show];
+}
+
 @end

@@ -20,6 +20,4 @@
 - (id)init;
 - (id)initWithText:(NSString*)text link:(NSString*)link;
 
-- (BOOL)isEqual:(id)object;
-
 @end

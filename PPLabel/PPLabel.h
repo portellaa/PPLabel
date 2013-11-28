@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "PPLabelLink.h"
+
 @class PPLabel;
 
 /// The delegate of a PPLabel object
@@ -57,6 +59,16 @@
  @return Return YES if the delegate handled this touch and should not be propagated any further.
  */
 - (BOOL)label:(PPLabel*)label didCancelTouch:(UITouch*)touch;
+
+
+/**
+ Method that is invoked on delegate each time that the user touch a text with a link behind
+ 
+ @param label The instance of PPLabel that called this method.
+ @param labelLink The instance with the information of the text and link
+ 
+ */
+- (void)label:(PPLabel*)label didSelectTextWithLink:(PPLabelLink*)labelLink;
 
 @end
 

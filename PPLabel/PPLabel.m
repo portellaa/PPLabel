@@ -220,7 +220,7 @@
 	UIEdgeInsets insets = {0, 0, 0, 0};
 	
 	CGRect newRect = [self textRectForBounds:CGRectMake(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height) limitedToNumberOfLines:self.numberOfLines];
-	
+	NSLog(@"drawTextInRect: %@", NSStringFromCGRect(rect));
     [super drawTextInRect:UIEdgeInsetsInsetRect(newRect, insets)];
 }
 
@@ -329,7 +329,10 @@
 	}
 	
 	if (![self.delegate respondsToSelector:@selector(label:didBeginTouch:onCharacterAtIndex:)])
+	{
 		[super touchesBegan:touches withEvent:event];
+		return;
+	}
     
     if (![self.delegate label:self didBeginTouch:touch onCharacterAtIndex:index]) {
         [super touchesBegan:touches withEvent:event];
@@ -344,7 +347,10 @@
     CFIndex index = [self characterIndexAtPoint:[touch locationInView:self]];
 	
 	if (![self.delegate respondsToSelector:@selector(label:didMoveTouch:onCharacterAtIndex:)])
+	{
 		[super touchesMoved:touches withEvent:event];
+		return;
+	}
     
     if (![self.delegate label:self didMoveTouch:touch onCharacterAtIndex:index]) {
         [super touchesMoved:touches withEvent:event];
@@ -363,7 +369,10 @@
     CFIndex index = [self characterIndexAtPoint:[touch locationInView:self]];
 	
 	if (![self.delegate respondsToSelector:@selector(label:didEndTouch:onCharacterAtIndex:)])
+	{
 		[super touchesEnded:touches withEvent:event];
+		return;
+	}
     
     if (![self.delegate label:self didEndTouch:touch onCharacterAtIndex:index]) {
         [super touchesEnded:touches withEvent:event];
@@ -379,6 +388,12 @@
     self.lastTouches = nil;
     
     UITouch *touch = [touches anyObject];
+	
+	if (![self.delegate respondsToSelector:@selector(label:didCancelTouch:)])
+	{
+		[super touchesCancelled:touches withEvent:event];
+		return;
+	}
     
     if (![self.delegate label:self didCancelTouch:touch]) {
         [super touchesCancelled:touches withEvent:event];

@@ -220,7 +220,7 @@
 	UIEdgeInsets insets = {0, 0, 0, 0};
 	
 	CGRect newRect = [self textRectForBounds:CGRectMake(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height) limitedToNumberOfLines:self.numberOfLines];
-	NSLog(@"drawTextInRect: %@", NSStringFromCGRect(rect));
+
     [super drawTextInRect:UIEdgeInsetsInsetRect(newRect, insets)];
 }
 
